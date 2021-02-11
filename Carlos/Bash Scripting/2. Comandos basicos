@@ -1,0 +1,17 @@
+cat
+    - Con un fichero: muestra el fichero por la salida estandar
+    - Sin argumentos: es un espejo que muestra lo que se ha introducido por la entrada estandar
+
+tee guarda el contenido que se ha introducido por la entrada estandar en el fichero indicado, ademas lo saca por la salida estandar
+
+date muestra la fecha
+
+las tuberias sirven para meter como entrada estandar a un comando la salida de otro comando, por ejemplo:
+cat prueba.txt | tee copiado.txt
+leera el fichero prueba.txt, la salida la enviara a tee y este guardara la salida en copiado.txt
+
+<() genera un archivo temporal con el comando que se ha introducido entre parentesis, por ejemplo
+<(date)
+generaria un fichero con la fecha
+
+strace muestra las syscall que ha ejecutado el comando

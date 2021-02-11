@@ -1,0 +1,45 @@
+#!/bin/bash
+
+# Nota: es importante siempre hacer las comparaciones entre [] dejando un espacio entre el [] y la variable.
+# Si se escribe todo junto interpretará el [] como parte de la variable.
+# Ademas, si no se escriben los [] intentará ejecutar la variable y dará un error.
+
+# Define dos strings que posteriormente compara i son iguales.
+# Si estos dos string son iguales el $? saldrá como 0, pues significa que el comando de igualar ha salido bien.
+# Si son diferentes saldrá un numero diferente a 0, ya que se considerá que ha dado un error.
+string_a="UNIX"
+string_b="GNU"
+
+echo "Are $string_a and $string_b strings equals?"
+[ $string_a = $string_b ]
+echo $?
+
+# Igual que en el ejemplo anterior, pero aqui las variables son integers.
+num_a=1000
+num_b=1000
+
+echo "Is $num_a equal to $num_b number equals?"
+[ $num_a = $num_b ]
+echo $?
+
+# En este caso compara cual es mas grande a partir del parametro -lt (less than).
+num_a=100
+num_b=200
+
+if [ $num_a -lt $num_b ]; then
+  echo "$num_a is less than $num_b!"
+fi
+
+# En este caso funciona como la comparación de cadenas de mas arriba, si num_a es mas pequeño que num_b
+# se considerá que el comando ha salido bien y el $? valdrá 0, en caso contrario tendra otro valor.
+[ $num_a -lt $num_b ]
+echo $?
+
+# En este caso compara cual es mas grande a partir del parametro -gt (great than).
+# Esta comparación la hace dentro de un if, si el número es mayor se cumple la condición y hace el primer echo,
+# en caso contrario ejecutaria el segundo echo.
+if [ $num_a -gt $num_b ]; then
+  echo "$num_a is great than $num_b!"
+else
+  "echo "$num_a is less than $num_b!"
+fi

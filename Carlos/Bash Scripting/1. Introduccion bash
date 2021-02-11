@@ -1,0 +1,19 @@
+Builtin.
+Algunos comandos estan dentro de la consola, es decir, cuando se quieren ejecutar no se esta llamando al programa,
+sino que la propia terminal tiene el código dentro.
+
+Algunos ejemplos de builtin son cd, echo y kill.
+
+Para ejecutar el programa y no su builtin se debe escribir la ruta de dicho programa.
+Por ejemplo:
+ls -> /bin/ls
+echo -> /bin/echo
+
+Para saber los builtin se debe ejecutar el comando "compgen -b" y para ver los que estan activos "enable -a"
+Para saber la ruta del programa es el comando "whereis".
+
+
+Shebang.
+El shebang es el código que aparece en la parte superior del programa, este indica en que lenguaje esta hecho el script
+y que interprete debe ejecutarlo.
+En el caso de bash sería "#!/bin/bash", para python seria "#!/bin/python".

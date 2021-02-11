@@ -1,0 +1,36 @@
+echo "hola" > file
+cat file1 > file2
+  # Cambia la salida estandar para que en vez de ser la pantalla sea un fichero.
+
+cat < file
+  # Cambia la entrada estandar para que en vez de ser el teclado sea un fichero.
+
+cat << EOF
+  # Permite escribir un texto hasta que se escribe el string utilizado como delimitador.
+
+cat <<< "hola"
+  # Usa un string como entrada estandar, si fuese un fichero usaria el nombre y no el contenido.
+
+ls /etc 1> stderrout 2>&1
+  # El descriptor 1 que es la salida estandar lo guarda en el fichero stderrout.
+  # El descriptor 2 que es la salida estandar de errores se redirecciona al mismo sitio que la salida estandar.
+
+ls /etc > stderrout 2>&
+  # Lo mismo que arriba, ya que el 1 es opcional, cuando no hay nada se entiende que es 1.
+  # "1> = >" y "2>&1 = 2>&".
+
+ls /etc &> stderrout
+  # Guarda las dos salidas, estandar y errores en el fichero stderrout.
+
+ls /etc 1> stdout 2>stderr
+  # Guarda la salida del comando en el fichero stdout y los errores en el fichero stderr.
+
+ls /etc > stdout
+  # Guarda la salida estandar en el fichero stdout.
+  # Los errores salen por pantalla.
+
+ls /etc 1> stdout
+  # Lo mismo que la anterior.
+
+ls /etc >> stdout
+  # Hace un append del resultado al fichero stdout.

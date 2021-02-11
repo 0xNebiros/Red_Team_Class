@@ -1,0 +1,29 @@
+#!/bin/bash
+# This bash scripts is used to backup a user's home directory to /tmp/
+
+#Ejecuta el comando whoami y guarda el resultado en la variable user, este es el usuario del que hacer backup.
+user=$(whoami)
+
+# Si el usuario es root el input sera la carpeta de root,, si es otro usuario se cogerá su carpeta de home.
+if [[ "$user" == "root"]]; then
+  input=/root
+else
+  input=/home/$user
+fi
+
+# Se guarda la salida en tmp, cogiendo el nombre de usuario y ejecutando el comando date, para sacar un fichero con
+# la fecha de hoy en el nombre.
+# La llave se usa para dejar claro cual es la variable, si pusierá solo $user la maquina podría entender que la variable es user_home,
+# Con ${user} entiende que la variable es unicamente user.
+# La extensión puede ser tar.gz o zip según el fichero que quiera.
+#output=/tmp/${user}_home_$(date +%Y-%m-%d_%H%M%S).tar.gz
+output=/tmp/${user}_home_$(date +%Y-%m-%d_%H%M%S).zip
+
+# Se ejecuta el comando de compresión (tar o zip) indicando el fichero de salida y el directorio de entrada a partir
+# de las variables input y output.
+#tar -czf $output $input
+zip -r $output $input
+
+# Da un mensaje de que todo ha salido bien y hace un ls para mostrar las propiedades del fichero de salida.
+echo "Backup of $input completed! Details about the output backup file:"
+ls -l $input

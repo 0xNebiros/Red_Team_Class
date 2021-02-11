@@ -1,0 +1,39 @@
+#!/bin/bash
+# This bash scripts is used to backup a user's home directory to /tmp/
+
+user=$(whoami)
+input=/home/$user
+output=/tmp/${user}_home_$(date +%Y-%m-%d_%H%M%S).tar.gz
+
+# Funciones para contar todos los archivos y directorios que hay en un directorio.
+# El comando "find" hace una busqueda en el directorio indicado y todos los directorios anidados,
+# el "." se utiliza para indicar que tambien busque entre los archivos ocultos,
+# al especificar "type -f" solo hace la busqueda de archivos (ignorando directorios)
+# y con "type -d" solo busca directorios (ignorando archivos).
+# El resultado de este comando se envia por una tuberia a "wc".
+# El comando "wc" cuenta lo que se le ha enviado y después lo muestra por pantalla,
+# de normal cuenta cada linea, palabra y byte, pero con el parametro "-l" se especifica que solo cuente lineas.
+# La variable "$1" simboliza el primer parametro que se ha enviado a la función.
+function total_files {
+  find $1 . -type f | wc -l
+}
+
+function total_directories {
+  find $1 -type d | wc -l
+}
+
+# Se ejecuta el comando de comprimir el fichero a partir de la entrada y la salida indicadas
+# y los errores (2>) los desecha enviandolos a null.
+tar -czf $output $input 2> /dev/null
+
+# Se llama  las funciones definidas mas arriba enviando como parametro la variable $input,
+# que será recibida como $1.
+echo -n "Files to be included:"
+total_files $input
+echo -n "Directories to be included:"
+total_directories $input
+
+echo "Backup of $input completed!"
+
+echo "Details about the output backup file:"
+ls -l $output

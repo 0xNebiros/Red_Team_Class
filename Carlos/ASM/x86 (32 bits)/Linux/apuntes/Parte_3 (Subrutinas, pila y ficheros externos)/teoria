@@ -1,0 +1,45 @@
+Subrutinas.
+Las subrutinas son piezas de código reusables utilizadas para ejecutar una tarea repetitiva.
+La idea de las subrutinas es que estas sean reutilizables, es por eso que no se utilizan los jmp para entrar ni salir de estas, de esa forma se podría llamar a la subrutina desde
+cualquier punto del código.
+Las instrucciones utilizadas al trabajar con las subrutinas son call y ret (explicadas mas abajo).
+
+Pila.
+La pila (o stack) es un tipo especial de memoria que se utiliza en la ejecución de un programa.
+Esta pila utiliza el sistema LIFO (Last In First Out), es decir, se comporta como lo haría una pila de platos, el ultimo plato que se pone en la pila es el primero que saldrá.
+La pila puede ser utilizada para guardar valores, direcciones de memoria, nombres de programa, etc... Todo lo que necesite el programa en ejecución.
+Para introducir y extraer valores de la pila se utilizan las instrucciones push y pop (explicadas mas abajo).
+Dos registros importante relacionados con la pila son EBP y ESP.
+EBP es la dirección en la que empieza la pila.
+ESP es la dirección en la que esta el último registro de la pila.
+
+Ficheros externos.
+Los ficheros externos permiten mantener un código mas limpio al separarlo en diferentes ficheros.
+Además estos pueden ser reusados mas fácilmente.
+Los ficheros incluidos dentro de un programa pueden ser utilizados como parte del mismo.
+Para incluir un fichero externo en el principal se utiliza la instrucción include.
+
+Instrucciones.
+- call.
+  Instrucción utilizada para llamar a una subrutina.
+  El formato es "call label".
+  Esta instrucción guarda en la pila el valor de la siguiente dirección de memoria que se debe ejecutar y después hace un jmp a la label en la que esta la subrutina.
+
+- ret.
+  Instrucción utilizada para salir de una subrutina.
+  El formato es "ret".
+  Esta instrucción coge el primer valor de la pila, el cual debe ser una dirección de memoria y salta a dicha dirección.
+
+- push.
+  Instrucción utilizada para guardar un valor en la pila.
+  El formato es "push eax".
+  Esta instrucción mete en la pila el valor que se le haya indicado.
+
+- pop.
+  Instrucción utilizada para quitar un valor de la pila.
+  El formato es "pop eax".
+  Esta instrucción coge el primer valor almacenado en la pila y lo guarda en una dirección de memoria o registro.
+
+- include.
+  Instrucción utilizada para incluir el código de una libreria externa.
+  El formato es "%include 'functions.asm'"

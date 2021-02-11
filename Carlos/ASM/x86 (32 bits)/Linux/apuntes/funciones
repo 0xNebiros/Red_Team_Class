@@ -1,0 +1,55 @@
+Las funciones se funcionan como se haría con los jump, es decir, se etiqueta una sección de memoria a la que se llamará.
+La diferencia es que en el caso de las funciones esta retornara, es decir, llamará la sección de memoria siguiente desde la que se llamo a la función.
+Para llamar a una función se usa call y para salir de esta ret.
+Para saber a donde debe volver una función utiliza el primer argumento guardado en la pila, es decir, al llamar a una dirección de memoria se guarda
+la dirección de memoria siguiente en la pila y al salir de la función se hace un pop de lo que haya en la pila y se salta a esa dirección.
+
+
+Call Conventions:
+Cuando se llama a una función se debe seguir lo que se llama "convención de llamadas", en estas convenciones se definen cuales son los registros
+que no se van a modificar.
+Es decir, se podría llamar a una función siguiendo una call convention que defina que eax y ebx no se van a utilizar, esto significa que cuando
+la función acabe dichos registros seguiran teniendo el mismo valor. Para ello la función los guardará en algún sitio, por ejemplo en la pila y antes
+de retornar los volverá a dejar.
+Los registros que no estan definidos como que no se modificaran pueden cambiar, es decir, si se ha definido que eax y ebx no se tocarán cabe la posibilidad
+de que ecx y edx hayan cambiado de valor al salir.
+
+Pila:
+Lo primero que hace una función es pushear ebp a la pila, es decir, mueve la dirección a la que apunta la base de la pila a la parte superior de la pila.
+Esto se hace para al salir de la función poder recuperar la base de la pila.
+Después mueve a ebp la dirección almacenada en esp, es decir, la base de la pila se convierte en el tope de la pila.
+De esta forma esta creando una nueva pila para la función.
+Para salir de la función y dejar la pila como estaba el programa utiliza la función leave.
+
+Variables:
+Cuando se llama a una función esta va creando espacios de memoria en la pila para guardar las variables locales.
+Por ejemplo:
+int resultado = 0   -- mov dword [ebp-0x4], 0
+int n1 = 3          -- mov dword [ebp-0x8], 3
+int n2 = 2          -- mov dword [ebp-0xc], 2
+De esta forma va creando espacios en la pila para guardar las variables temporales.
+
+Todas las variables que se quieran pasar a una función en C (convertido a ensamblador de 32 bits) se pasan por la pila.
+Para acceder después a estas variables el programa tendrá que acceder a la posición de la pila donde se alojan dichos datos.
+Por ejemplo:
+int suma (int n1, int n2){
+  resultado = n1+n2;         -- mov edx, dword [ebp+0x8] ; Recoge la primera variable que ha recibido del programa, que estará en la posición 8 (porque en la 4 esta la posición de retorno.)
+                             -- mov eax, dword [ebp+0xc] ; Recoge la siguiente variable que esta en los 4 bytes siguientes (c = 12 en hex).
+                             -- add eax, edx             ; Suma los dos datos.
+                             -- mov [ebp-0x4], eax       ; Guarda en ebp-4, que es la posición de memoria del principio de la pila menos 4 la variable que acaba de calcular.
+  return resultado;          -- mov eax, mov [ebp-0x4]   ; Guarda en eax la variable creada en esta función, de forma que se pueda devolver.
+                             -- leave                    ; Deshace la pila para dejarla como estaba antes de entrar a la función.
+                             -- ret                      ; Vuelve a la
+}
+
+La pila siempre quedara de esta forma:
+ESP --> N  Variable de función
+        3ª Variable de función.
+        2ª Variable de función.
+        1ª Variable de función.
+EBP
+Resumen de funcionamiento de función:
+push ebp     ; Guarda la base en el tope de la pila.
+mov ebp, esp ; Se mueve la dirección a la que apunta el tope de la pila a la dirección a la que apunta la base.
+leave        ; Es un "mov esp, ebp" seguido de "pop ebp". Basicamente esta deshaciendo lo que ha hecho en las dos instrucciones anteriores.
+ret          ; Vuelve a la posición de memoria a la que apunta el tope de la pila.

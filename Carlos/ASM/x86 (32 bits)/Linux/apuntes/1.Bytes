@@ -1,0 +1,23 @@
+ 
+Un bit es la minima unidad de información, es decir, es un 0 o un 1.
+Los procesadores siempre trabajan con grupos de 8 bits, es decir, no pueden leer una información menor a 8.
+Esto implica que un procesador no puede leer 7 bits ni 9. Tiene que leer 8 o 16, incluso si nuestra información solo ocupase, por ejemplo, 12 bits, sería necesario coger los 16.
+
+Al conjunto de 8 bits se le llama byte, es decir, un procesador trabaja a partir de bytes.
+Por ejemplo el byte '01000001' se utilizaría para definir el caracter A en ASCII. '01000010' sería B, etc...
+
+Para hacer mas facil la lectura del binario se invento el hexadecimal. El hexadecimal es un sistema de numeración basado en 10 caracteres.
+Es decir, se cuenta 1,2,3,4,5,6,7,8,9,A,B,C,D,E,F,10,11,12,13,14,15,16,17,18,19,1A,1B,1C,1D,1E,1F,etc..
+En hexadecimal 2 caracteres representan 1 byte.
+Por ejemplo:
+binario     HEX   ASCII
+01000001    41	  A
+01000010    42	  B
+01000011    43	  C
+01000100    44    D
+01001010    4A    J
+01001011    4B    K
+01001100    4C    L
+01001101    4D    M
+
+Una palabra representa un conjunto de bytes (8*x bits), estos pueden ser 1 byte (8 bits), 2 bytes (16 bits), 3 bytes (32 bits), 5 bytes(64 bits).

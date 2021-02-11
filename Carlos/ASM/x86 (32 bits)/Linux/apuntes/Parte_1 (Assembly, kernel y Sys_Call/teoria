@@ -1,0 +1,34 @@
+Introducción.
+El lenguaje ensamblador es el código con el que se programa un microprocesador.
+Este es diferente para cada microprocesador y para cada arquitectura, esto significa que no tiene el mismo set de instrucciones un intel/adm actual (que usan la arquitectura x86 para 32 bits y x86-64 para 64 bit) que el procesador de una nes, una atari, una nintendo64, etc...
+La única interfaz que tiene un programador por encima del hardware es el kernel, el núcleo del sistema operativo.
+
+System Call.
+Para poder crear programas en ensamblador es necesario hacer uso del kernel, para ello se utilizan las system calls propias del kernel.
+Las system call son una librería creada para el sistema operativo y se utilizan para diferentes funciones como leer el teclado o escribir en la pantalla.
+Cuando se invoca una system call el programa suspende su ejecución y hace una llamada al kernel, el cual contacta con los drivers requeridos para ejecutar la petición y posteriormente devuelve el control al programa.
+Los drivers se llaman drivers (controladores) porque los utiliza el kernel para controlar (to drive) el hardware.
+Para utilizar las sys_call se debe meter en EAX el número de función y en EBX, ECX y EDX los argumentos que el kernel necesita.
+Para ejecutar la interrupción se utiliza la instrucción "INT 0x80" o "INT 80h".
+
+Partes de un programa.
+sección .data:
+Esta sección se utiliza para definir los datos ya inicializados.
+Vendrian a ser algo asi como las constantes en java, ya que se declaran como variables pero su valor no puede cambiar.
+Ejemplos:
+ - message: db 'Hello world!' ; declara message que contendra los bytes 'Hello world!' (se utiliza db para definir que se almacena el string en grupos de un byte, es decir, letra a letra).
+ - msglength: equ 12          ; declara mslength para que contenga el valor constante de 12 (equ se utiliza para definir numeros o direcciones de memoria constantes).
+ - buffersize: dw 1024        ; declara buffersize para ser un word que contenga 1024 (un word son 2 bytes, para eso se utiliza dw, utilizar dw implica que no se podría almacenar menos de 2 bytes, aunque el valor ocupase menos de ese espacio).
+
+sección .bss:
+Es la sección donde se declaran las variables, se guardaría un espacio inicializado en memoria para utilizar dichas variables.
+Ejemplos:
+ - filename: resb 255 ; reserva 255 bytes.
+ - number:   resb 1   ; reserva 1 byte.
+ - bignum:   resw 1   ; reserva 1 word (1 word = 2 bytes).
+ - realarray: resq 10 ; reserva un array de 10 reales.
+
+sección .text:
+En esta sección es donde se escribe el código que será ejecutado.
+Esta sección debe empezar siempre con global _start para decirle al kernel la posición de memoria en la que empieza el programa.
+Es parecido a lo que se hace en java o C con la función main, solo que aquí no es una función sino un punto de inicio.

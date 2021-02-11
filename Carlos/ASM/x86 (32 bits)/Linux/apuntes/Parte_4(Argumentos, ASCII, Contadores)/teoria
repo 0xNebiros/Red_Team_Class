@@ -1,0 +1,8 @@
+Argumentos.
+Los argumentos se pasan en la ejecución del programa, es decir, cuando se ejecuta el programa en la misma linea de comandos se deben poner los argumentos que se desean pasar.
+Por ejemplo, si se ejecuta el programa ejercicio con "./ejercicio argumento_1 argumento_2 argumento_3" se enviaran estos 3 argumentos al programa.
+Dichos argumentos el programa los almacena en el stack.
+Para acceder a los argumentos solo hay que ir haciendo pop, de esta forma se obtienen las direcciones de memoria en las que estan almacenadas los argumentos.
+El primer argumento será el número de argumentos.
+El segundo argumentos será el nombre del programa.
+Del tercero para adelante son los argumentos introducidos.

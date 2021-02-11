@@ -1,0 +1,76 @@
+Memoria.
+El procesador trabaja con los datos almacenados en la memoria RAM, pero no puede trabajar directamente en esta.
+Es decir, no puede, por ejemplo, incrementar un contador definido como una variable.
+Para ello el procesador tendrá que mover dicho valor a un registro intermedio, ejecutar la operación y posteriormente moverlo a su registro en memoria.
+Ejemplo:
+section .bss
+  counter: resb 1
+
+section .text
+  ; Esto es incorrecto, ya que esta intentando incrementar el valor alojado en la dirección de memoria a la que apunta counter.
+  inc counter
+
+  ; La forma correcta de hacerlo es la siguiente:
+  mov eax, [counter]  ; Mueve el contenido de counter a un registro intermedio (eax en este caso).
+  inc eax             ; Incrementa el contenido de eax en uno.
+  mov [counter], eax  ; Mueve al contenido de la dirección de memoria a la que apunta counter el contenido de eax.
+
+Tampoco es posible mover datos entre direcciones de memoria sin utilizar un registro intermedio.
+Ejemplo:
+section .data
+  constant: equ 5
+
+section .bss
+  output: resb 1
+
+section .text
+  ; Esto dará un error ya que se esta intentando mover de una dirección de memoria a otra dirección de memoria.
+  mov [output], [constant]
+
+  ; La forma correcta es la siguiente.
+  mov eax, [constant] ; Primero se almacena el contenido de la dirección de memoria a la que apunta constant en eax (registro intermedio).
+  mov [output], eax   ; Despues se mueve lo que hay en eax a la dirección de memoria a la que apunta output.
+
+Instrucciones básicas.
+- mov.
+  Instrucción utilizada para mover datos entre direcciones de memoria y registros.
+  El formato es "mov destino, origen".
+  Es importante distinguir cuando se esta moviendo una dirección de memoria y cuando se esta moviendo el contenido de dicha dirección.
+  Por ejemplo, suponiendo que tenemos una etiqueta llamada mensaje en la que hemos almacenado el string "Hello World!".
+  mov eax, mensaje   ; Con esta instrucción lo que se esta moviendo es la dirección de memoria a la que apunta la etiqueta mensaje (que sera un numero hexadecimal con un formato similar a "0x804900a") a eax,
+                       es decir, eax pasara a valer esa dirección.
+  mov eax, [mensaje] ; Con esta instrucción se movería el contenido almacenado en la dirección de memoria a la que apunta mensaje (que en este caso es "Hello World!") a eax (realmente mueve Hell, porque el resto no cabe).
+
+- add.
+  Instrucción utilizada para sumar.
+  El formato es "add destino, origen".
+  Ejemplos:
+  add eax, 3   ; Al contenido de eax le suma 3 y lo guarda en eax.
+  add eax, ebx ; Al contenido de eax le suma el contenido de ebx y lo guarda en eax.
+
+- sub.
+  Instrucción utilizada para restar.
+  El formato es "sub destino, origen".
+  Ejemplos:
+  sub ebx, 5   ; Al contenido de ebx le resta 5 y lo guarda en ebx.
+  sub ebx, ecx ; Al contenido de ebx le resta el contenido de ecx y lo guarda en ebx.
+
+- cmp.
+  Instrucción utilizada para comparar dos valores.
+  El formato es "cmp var1, var2".
+  Esta instrucción lo que hace es restar los dos valores que se le pasan, de esta forma se puede saber si ambos valores son iguales o uno es mayor que otro.
+  En base a esto saltaran las flags, esto son registros especiales de un byte que utilizaremos para movernos por el código mediante las instrucciones jmp.
+
+- jmp.
+  Instrucción utilizada para saltar a otra sección de memoria.
+  El formato es "jmp label".
+  La ejecución del programa irá a la dirección de memoria a la que apunta label a partir de donde seguirá la ejecución.
+  Esta instrucción puede ser utilizada de diferentes formas, de forma que a traves de las flags se puede decidir si saltar o no.
+  Esto se hace utilizando la instrucción cmp, de forma que la comparación hace saltar ciertas flags que el programa utiliza para decidir si debe o no saltar.
+  Algunas instrucciones utilizadas en aritmética son:
+    - JE/JZ (Jump Equal / Jump Zero).
+    - JNE/JNZ (Jump Not Equal / Jump Not Zero).
+    - JG/JNLE (Jump Greater / Jump Not Less and Not Equal).
+    - JGE/JNL (Jump Greater or Equal / Jump Not Less).
+    - JL/JNGE (Jump Less / Jump Not Greater and Not Equal).
+    - JLE/JNG (Jump Less or Equal / Jump Not Greater).

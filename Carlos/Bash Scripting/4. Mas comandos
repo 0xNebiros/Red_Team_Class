@@ -1,0 +1,29 @@
+grep -i: busca con mayusculas y minusculas
+grep -v: invierte el match
+gren -n: muestra la linea
+
+expresiones regulares:
+^foo  - Empieza por foo
+foo$  - acaba con foo
+..foo - dos caracteres y que acabe en foo
+t[wo] - que empiece por t y luego tenga una w o una o
+[^c]ode - que acabe en ode pero no empiece con c
+^[A-Z]  - que empiece en mayuscula
+^[0-9]  - que empiece por un numero
+
+c+z = segundo plano pausado
+fg  = vuelve a primer plano ejecucion, con numero elige cual
+bg  = vuelve a segundo plano ejecucion
+jobs = lista los numeros
+
+screen = puede crear un terminal en otro terminal (util para servidores remotos)
+screen -x = para ver el otro terminal
+
+history = es un historial de la sesión
+!x      = ejecuta el comando x del history
+!!      = ejecuta el último comando
+cd !! :1  = ejecuta un cd al parametro 1 del comando anterior
+!! :1-$   = selecciona todos los parametros
+!! :1*    = selecciona del 1 al final 
+
+top = muestra todos los procesos

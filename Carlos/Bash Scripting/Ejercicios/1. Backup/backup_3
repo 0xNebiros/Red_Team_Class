@@ -1,0 +1,63 @@
+#!/bin/bash
+# This bash scripts is used to backup a user's home directory to /tmp/
+
+user=$(whoami)
+input=/home/$user
+output=/tmp/${user}_home_$(date +%Y-%m-%d_%H%M%S).tar.gz
+
+function total_files {
+  find $1 . -type f | wc -l
+}
+
+function total_directories {
+  find $1 -type d | wc -l
+}
+
+# En estas nuevas funciones se esta accediendo a un fichero comprimido mediante "tar", al especificar el parametro "-tzf"
+# lo que se hace es listar todos los ficheros y directorios comprimidos dentro de este archivo comprimido.
+# El resultado de esta busqueda se envia mediante una tuberia a "grep", este comando lo que hace es buscar un patrón a partir de una expresión regular
+# en un fichero que se le este enviando. En este caso el patrón que busca es "/$", lo que significa que busca un nombre de fichero
+# acabado en /, es decir, un directorio.
+# En la segunda función se utiliza el parametro "-v", esto es para revertir la expresión regular, buscará todos los nombres que NO acaben con "/".
+# De esta forma se consigue encontrar todo lo que no sean directorios.
+# Por último se envia el resultado por la entrada estandar a "wc -l" para que lo cuente.
+function total_archived_directories {
+  tar -tzf $1 | grep /$ | wc -l
+}
+
+function total_archived_files {
+  tar -tzf $1 | grep -v /$ | wc -l
+}
+
+# Se ejecuta el comando de comprimir el fichero a partir de la entrada y la salida indicadas
+# y los errores (2>) los desecha enviandolos a null.
+tar -czf $output $input 2> /dev/null
+
+# Se comprueban todos los archivos y carpetas que se debian comprimir.
+src_files=$( total_files $input )
+src_directories=$( total_directories $input )
+
+# Se comprueban todos los archivos y carpetas que se han comprimido.
+# y se muestra un mensaje diciendo el resultado de estas operaciones.
+arch_files=$( total_archived_files $output )
+arch_directories=$( total_archived_directories $output )
+
+echo "Files to be included: $src_files"
+echo "Directories to be included: $src_directories"
+echo "Files archived: $arch_files"
+echo "Directories archived: $arch_directories"
+
+# Comprueba que el número de ficheros leidos en la carpeta de la que se hace backup coincida con
+# el número de ficheros comprimidos.
+# Si coincide muestra un mensaje de que ha ido bien y hace un ls mostrando los archivos que se han comprimido.
+# Si sale mal muestra un mensaje de error.
+if [ $src_files -eq $arch_files ]; then
+  echo "Backup of $input completed!"
+  echo "Details about the output backup file:"
+  ls -l $output
+else
+  echo "Backup of $input failed!"
+fi
+
+echo "Details about the output backup file:"
+ls -l $output
